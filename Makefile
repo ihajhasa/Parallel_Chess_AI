@@ -30,7 +30,7 @@ clean:
 	rm -rf ./test-$(CONFIGURATION)
 
 game:
-	g++ -o run_game src/Test\ Files/game.cpp src/minimax.cpp src/minimax_openmp.cpp src/gen_moves.cpp src/board_rep.cpp
+	g++ -std=c++11 -o run_game src/Test\ Files/game.cpp src/minimax.cpp src/minimax_openmp.cpp src/gen_moves.cpp src/board_rep.cpp
 
 FILES = src/*.cpp \
 		src/*.h
