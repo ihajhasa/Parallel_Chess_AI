@@ -11,17 +11,17 @@
 #define MIN 0
 
 
-void MiniMax::print_move(ChessBoard board, Move move)
-{
-	std::cout << "Moving Piece: ";
-	find_piece(board, move.Old);
-	std::cout << "\n";
-	std::cout << "(" << std::to_string(move.Old.row) << ", " << std::to_string(move.Old.col) << ")";
-	std::cout << " to ";
-	std::cout << "(" << std::to_string(move.New.row) << ", " << std::to_string(move.New.col) << ")";
-	std::cout << "\n";
-	return;
-}
+// void MiniMax::print_move(ChessBoard board, Move move)
+// {
+// 	std::cout << "Moving Piece: ";
+// 	find_piece(board, move.Old);
+// 	std::cout << "\n";
+// 	std::cout << "(" << std::to_string(move.Old.row) << ", " << std::to_string(move.Old.col) << ")";
+// 	std::cout << " to ";
+// 	std::cout << "(" << std::to_string(move.New.row) << ", " << std::to_string(move.New.col) << ")";
+// 	std::cout << "\n";
+// 	return;
+// }
 
 
 Best_Move *Compare_Max (Best_Move *prev, 

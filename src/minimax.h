@@ -29,7 +29,7 @@ public:
 
     Move Generate_Next(ChessBoard board, int depth, int color);
 
-    void print_move(ChessBoard board, Move move);
+    // void print_move(ChessBoard board, Move move);
 };
 
 #endif
