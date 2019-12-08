@@ -27,9 +27,9 @@ public:
 
     // List of variables that need to be global across class (if any)
 
-    float Evaluate(ChessBoard board, int player);
+    float Evaluate(ChessBoard board, int color);
 
-    vector<Move> All_Next_Moves(ChessBoard board, int player);
+    vector<Move> All_Next_Moves(ChessBoard board, int color);
 
     Move Generate_Next(ChessBoard board, int depth);
 

@@ -87,7 +87,7 @@ Best_Move Max_Iteration (ChessBoard board, int depth, Move move)
 	if (!depth)
 		{
 		   Best_Move Last;
-		   Last.score = MiniMax::Evaluate (board, MAX);
+		   Last.score = MiniMax::Evaluate (board, board::get_board_color());
 		   Last.move = move;
 		   board::free_board();
 		   return Last;
@@ -98,7 +98,7 @@ Best_Move Max_Iteration (ChessBoard board, int depth, Move move)
 		ChessBoard board_c = *(board::copy());
 		Best_Move Max;
 		Max.score = 0.f;
-		vector<Move> Moves = All_Next_Moves(board_c, MAX);
+		vector<Move> Moves = All_Next_Moves(board_c, board::get_board_color());
 		for (vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
@@ -116,12 +116,18 @@ Best_Move Max_Iteration (ChessBoard board, int depth, Move move)
 	}
 }
 
+int get_opponent_color(int AI)
+{
+	return (AI == BLACK) ? WHITE : BLACK;
+}
+
 Best_Move Min_Iteration (ChessBoard board, int depth, Move move)
 {
 	if (!depth)
 	{
 		Best_Move Last;
-	    Last.score = MiniMax::Evaluate (board, MIN);
+		int AI_color = board::get_board_color();
+	    Last.score = MiniMax::Evaluate (board, get_opponent_color(AI_color));
 	    Last.move = move;
 	    board::free_board();
 	    return Last;
@@ -131,7 +137,7 @@ Best_Move Min_Iteration (ChessBoard board, int depth, Move move)
 		ChessBoard board_c = *(board::copy());
 		Best_Move Min;
 		Min.score = 10.f;
-		vector<Move> Moves = All_Next_Moves(board_c, MIN);
+		vector<Move> Moves = All_Next_Moves(board_c, get_opponent_color(AI_color));
 		for (vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
@@ -163,12 +169,13 @@ float scale (float score)
 }
 
 
-float MiniMax::Evaluate(ChessBoard board, int player)
+float MiniMax::Evaluate(ChessBoard board, int color)
 {
 
 	int *Player_Pieces = new int[2][7];
+	int player = color -  6;
 	int player2 = (player + 1) % 2;
-	vector<Move> MaxMoves, MinMoves;
+	vector<Move> P1Moves, P2Moves;
 
 
 	for (int i = 0; i < 2; i++)
@@ -179,21 +186,14 @@ float MiniMax::Evaluate(ChessBoard board, int player)
 		}
 	}
 
-	if (player == MAX)
-	{
-		MaxMoves = MiniMax::All_Next_Moves(board, player);
-		MinMoves = MiniMax::All_Next_Moves(board, player2);
-	}
 
-	else
-	{
-		MaxMoves = MiniMax::All_Next_Moves(board, player2);
-		MinMoves = MiniMax::All_Next_Moves(board, player);
-	}
+	P1Moves = MiniMax::All_Next_Moves(board, player);
+	P2Moves = MiniMax::All_Next_Moves(board, player2);
+
 	// Mobility of Player 1
 
-	Player_Pieces[MAX][6] = MaxMoves.length();
-	Player_Pieces[MIN][6] = MinMoves.length();
+	Player_Pieces[player][6] = P1Moves.length();
+	Player_Pieces[player2][6] = P2Moves.length();
 
 	for(int row = 0; row < 8; row++)
 	{
@@ -690,15 +690,13 @@ std::vector<Move> gen_all_next_moves(ChessBoard B, int color)
 }
 
 
-vector<Move> MiniMax::All_Next_Moves(ChessBoard board, int player)
+vector<Move> MiniMax::All_Next_Moves(ChessBoard board, int color)
 {
 
-	return gen_all_next_moves(board, player + 6);
+	return gen_all_next_moves(board, color);
 }
 
 Move MiniMax::Generate_Next(ChessBoard board, int depth)
 {
-
-	if (board::get_board_color() == WHITE) return Max_Iteration(board, depth, create_move(0, 0, 0, 0));
-	return Min_Iteration(board, depth, create_move(0, 0, 0, 0));
+	Max_Iteration(board, depth, create_move(0, 0, 0, 0));
 }
