@@ -6,7 +6,6 @@
 #include <string>
 #include <cstring>			// Remove the unnecessary ones later //
 #include <stdio.h>
-#include <conio.h>
 #include <stdlib.h>
 
 // Minimax associates white as max player: 1
