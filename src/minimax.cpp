@@ -200,6 +200,6 @@ vector<Move> MiniMax::All_Next_Moves(ChessBoard board, int player)
 Move MiniMax::Generate_Next(ChessBoard board, int depth)
 {
 
-	if (board::get_board_color() == WHITE) return Max_Iteration(board, 5, create_Move(0, 0, 0, 0));
-	return Min_Iteration(board, 5, create_Move(0, 0, 0, 0));
+	if (board::get_board_color() == WHITE) return Max_Iteration(board, depth, create_Move(0, 0, 0, 0));
+	return Min_Iteration(board, depth, create_Move(0, 0, 0, 0));
 }
