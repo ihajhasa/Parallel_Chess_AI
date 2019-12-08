@@ -10,21 +10,32 @@
 
 struct Pos
 {
-	int row;
-	int col;
+    int row;
+    int col;
 };
 
 struct Move 
 {
-	Pos Old;
-	Pos New;
+    Pos Old;
+    Pos New;
 };
+
 
 struct Best_Move
 {
     Move move;
     float score;
+    Best_Move *next;
 };
+
+struct Top
+{
+    Best_Move *Head;
+};
+
+Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color);
+
+Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color);
 
 
 class AlphaBeta
@@ -36,9 +47,11 @@ public:
 
     // List of variables that need to be global across class (if any)
 
-    Move Generate_Next(ChessBoard board, int depth);
+    Move Generate_Next(ChessBoard board, int depth, int color);
 
     void print_move(ChessBoard board, Move move);
 };
+
+#endif
 
 #endif
