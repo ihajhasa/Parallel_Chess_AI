@@ -96,32 +96,28 @@ void process_AI(ChessBoard *B, MiniMax AI, int color, int depth)
 {
     Move nextmove;
 
-    std::cout << "IS THIS CAUSING THE C!!!?>!?!!?!?!?!?" << std::endl;
     nextmove = AI.Generate_Next(*B, depth, color);
-    std::cout << "IS THIS CAUSING THE C!!!?>!?!!?!?!?!?" << std::endl;
 
     (*B).move(nextmove.Old.row, nextmove.Old.col, nextmove.New.row, nextmove.New.col);
     std::cout << "Moved (" << nextmove.Old.row << ", " << nextmove.Old.col << ") to (" << nextmove.New.row << ", " << nextmove.New.col << ")" << std::endl;
 
 }
 
-void check_border_pawns(ChessBoard *B)
+int is_missing_king(ChessBoard *B, int color)
 {
-    Piece *tmp;
-    for(int col = 0; col < 7; col++)
+    for(int row = 0; row < 8; row++)
     {
-        tmp = (*B).lookup(0, col);
-        if(tmp != NULL && tmp->name == PAWN && tmp->color == WHITE)
+        for (int col = 0; col < 8; col++)
         {
-            (*B).set_piece(0, col, QUEEN, WHITE);
-        }
-        tmp = (*B).lookup(7, col);
-        if(tmp != NULL && tmp->name == PAWN && tmp->color == BLACK)
-        {
-            (*B).set_piece(0, col, QUEEN, BLACK);
+            Piece *tmp;
+
+            tmp = (*B).lookup(row, col);
+
+            if(tmp != NULL && tmp->name == KING && tmp->color == color) return 0;
         }
     }
 
+    return 1;
 }
 
 
@@ -164,7 +160,11 @@ int main (int argc, char** argv) {
 
     while(!finished)
     {
-        if(turn == WHITE)
+        if(is_missing_king(B, turn))
+        {
+            finished = true;
+        }
+        else if(turn == WHITE)
         {
             if(!is_AI_white) process_user(B, turn);
             else process_AI(B, AI_White, turn, AI_depth);
@@ -182,5 +182,9 @@ int main (int argc, char** argv) {
         turn = (turn != WHITE) ? WHITE : BLACK;
 
     }
+
+    if(turn == WHITE) std::cout << "WHITE won the game!!!!" << std::endl;
+    else std::cout << "BLACK won the game!!!!" << std::endl;
+
 
 }

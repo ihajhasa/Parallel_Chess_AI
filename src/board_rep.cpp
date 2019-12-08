@@ -94,9 +94,30 @@ Piece* ChessBoard::lookup(int row, int col)
 	return lookup_square(row, col);
 }
 
+
 Piece* ChessBoard::move(int oldrow, int oldcol, int newrow, int newcol)
 {
-	return move_piece(oldrow, oldcol, newrow, newcol);
+	Piece *rv;
+
+	rv = move_piece(oldrow, oldcol, newrow, newcol);
+
+	// replace border pawns to queens
+	Piece *tmp;
+    for(int col = 0; col < 7; col++)
+    {
+        tmp = lookup(0, col);
+        if(tmp != NULL && tmp->name == PAWN && tmp->color == WHITE)
+        {
+            set_piece(0, col, QUEEN, WHITE);
+        }
+        tmp = lookup(7, col);
+        if(tmp != NULL && tmp->name == PAWN && tmp->color == BLACK)
+        {
+            set_piece(0, col, QUEEN, BLACK);
+        }
+    }
+
+    return rv;
 }
 
 ChessBoard* ChessBoard::copy()
