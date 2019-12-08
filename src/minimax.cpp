@@ -36,12 +36,6 @@ int is_valid_pos(int row, int col)
 	return (0 <= row && row < 8 && 0 <= col && col < 8) ? 1 : 0;
 }
 
-int is_valid_move(Chessboard CB, Move move)
-{
-	if (CB.lookup(move.Old.row, move.Old.col) == NULL) return 1;
-	else return 0;
-}
-
 void find_piece(ChessBoard CB, Pos position)
 {
 	Piece *type = CB.lookup(position.row, position.col);
@@ -733,7 +727,6 @@ Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color)
 			ChessBoard board_c = *(board.copy());
 			Move Curr_Move = *it;
 
-			if (!is_valid_move(board, Curr_Move)) continue;
 			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
 
 			Best_Move *New_Move = Min_Iteration(board_c, depth - 1, Curr_Move, get_opponent_color(color));
@@ -769,7 +762,6 @@ Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color)
 			ChessBoard board_c = *(board.copy());
 			Move Curr_Move = *it;
 
-			if (!is_valid_move(board, Curr_Move)) continue;
 			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
 			Best_Move *New_Move = Max_Iteration(board_c, depth - 1, Curr_Move, get_opponent_color(color));
 			Min = Compare_Min(Min, New_Move, Curr_Move);
