@@ -66,8 +66,8 @@ Best_Move parallel_max(ChessBoard board, int depth, Move move, int color)
 		bc.move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
 		moves_score[i] = parallel_max(board, depth-1, mv, (color != WHITE) ? WHITE : BLACK);
 
-		bc.free();
-		free(bc);
+		bc.free_board();
+		free(&bc);
 	}
 
 	Best_Move max_score = fast_get_max(moves_score, 0, moves_score.size());
@@ -127,8 +127,8 @@ Best_Move parallel_min(ChessBoard board, int depth, Move move, int color)
 		bc.move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
 		moves_score[i] = parallel_max(board, depth-1, mv, (color != WHITE) ? WHITE : BLACK);
 
-		bc.free();
-		free(bc);
+		bc.free_board();
+		free(&bc);
 	}
 
 	Best_Move min_score = fast_get_min(moves_score, 0, moves_score.size());
