@@ -8,12 +8,6 @@ class Pos
 public:
 	int row;
 	int col;
-	Pos() = default;
-    Pos(int vrow, int vcol)
-    {
-        row = vrow;
-        col = vcol;
-    }	
 };
 
 class Move 
@@ -35,7 +29,7 @@ public:
 
     float Evaluate(ChessBoard board, int player);
 
-    vector<Move> wAll_Next_Moves(ChessBoard board, int player);
+    vector<Move> All_Next_Moves(ChessBoard board, int player);
 
     Move Generate_Next(ChessBoard board, int depth);
 
