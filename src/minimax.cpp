@@ -1,8 +1,40 @@
 #include "minimax.h"
 
+void Print_piece(Piece *p_p)
+{
+	if(p_p == NULL) 
+	{
+		std::cout << "Emp";
+		return;
+	}
+
+
+	Piece p = *p_p;
+
+	if (p.color == BLACK)
+		std::cout << "B";
+	else if (p.color == WHITE)
+		std::cout << "W";
+
+	if (p.name == PAWN)
+		std::cout << "Pa";
+	else if (p.name == ROOK)
+		std::cout << "Ro";
+	else if (p.name == KNIGHT)
+		std::cout << "Kn";
+	else if (p.name == BISHOP)
+		std::cout << "Bi";
+	else if (p.name == QUEEN)
+		std::cout << "Qu";
+	else if (p.name == KING)
+		std::cout << "Ki";
+}
+
 int is_valid_pos(int row, int col)
 {
-	return (0 <= row && row < 8 && 0 <= col && col < 8) ? 1 : 0;
+	if(row < 0 || row >= 8 || col < 0 || col >= 8) return 0;
+	return 1;
+	// return (0 <= row && row < 8 && 0 <= col && col < 8) ? 1 : 0;
 }
 
 Move create_move(int oldrow, int oldcol, int newrow, int newcol)
@@ -318,8 +350,8 @@ std::vector<Move> gen_next_moves_bishop(ChessBoard B, int row, int col)
 		else if(tmp != NULL)
 		{
 			if(tmp->color != p->color) moves.push_back(create_move(row, col, newrow, newcol));
-			newrow = -1;
-			newcol = -1;
+			newrow = -5;
+			newcol = -5;
 		}
 		newrow--; newcol--;
 	}
@@ -335,8 +367,8 @@ std::vector<Move> gen_next_moves_bishop(ChessBoard B, int row, int col)
 		else if(tmp != NULL)
 		{
 			if(tmp->color != p->color) moves.push_back(create_move(row, col, newrow, newcol));
-			newrow = -1;
-			newcol = -1;
+			newrow = -5;
+			newcol = -5;
 		}
 
 		newrow--; newcol++;
@@ -353,8 +385,8 @@ std::vector<Move> gen_next_moves_bishop(ChessBoard B, int row, int col)
 		else if(tmp != NULL)
 		{
 			if(tmp->color != p->color) moves.push_back(create_move(row, col, newrow, newcol));
-			newrow = -1;
-			newcol = -1;
+			newrow = -5;
+			newcol = -5;
 		}
 
 		newrow++; newcol--;
@@ -371,8 +403,8 @@ std::vector<Move> gen_next_moves_bishop(ChessBoard B, int row, int col)
 		else if(tmp != NULL)
 		{
 			if(tmp->color != p->color) moves.push_back(create_move(row, col, newrow, newcol));
-			newrow = -1;
-			newcol = -1;
+			newrow = -5;
+			newcol = -5;
 		}
 
 		newrow++; newcol++;
@@ -410,13 +442,16 @@ std::vector<Move> gen_next_moves_king(ChessBoard B, int row, int col)
 	{
 		for(newcol = col - 1; newcol < col + 1; newcol++)
 		{
-			tmp = B.lookup(newrow, newcol);
-
-			if(tmp == NULL)
-				moves.push_back(create_move(row, col, newrow, newcol));
-			else if(tmp != NULL)
+			if(is_valid_pos(newrow, newcol))
 			{
-				if(tmp->color != p->color) moves.push_back(create_move(row, col, newrow, newcol));
+				tmp = B.lookup(newrow, newcol);
+
+				if(tmp == NULL)
+					moves.push_back(create_move(row, col, newrow, newcol));
+				else if(tmp != NULL)
+				{
+					if(tmp->color != p->color) moves.push_back(create_move(row, col, newrow, newcol));
+				}
 			}
 		}
 	}
@@ -461,6 +496,7 @@ std::vector<Move> gen_all_next_moves(ChessBoard B, int color)
 
 			if(p != NULL && p->color == color)
 			{
+				std::cout << std::endl;
 				std::vector<Move> submoves = gen_next_moves(B, row, col);
 				moves.insert(std::end(moves), std::begin(submoves), std::end(submoves));
 			}

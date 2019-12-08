@@ -49,16 +49,27 @@ void print_board(ChessBoard B)
 
 int main()
 {
+	int counter = 0;
 	ChessBoard *B = new ChessBoard;
 	(*B).init();
 
-	std::vector<Move> moves = gen_all_next_moves(*B, WHITE);
+	std::vector<Move> moves = gen_all_next_moves(*B, BLACK);
 
 	for (std::vector<Move>::iterator it = moves.begin(); it != moves.end(); ++it)
 	{
 		ChessBoard *B2 = (*B).copy();
 		(*B2).move((*it).oldrow, (*it).oldcol, (*it).newrow, (*it).newcol);
 		print_board(*B2);
+		counter++;
+
+		// if(counter == 3 || counter == 4)
+		// {
+		// 	Piece *p = (*B).lookup((*it).newrow, (*it).newcol);
+		// 	print_piece(p);
+		// 	std::cout << std::endl;
+		// 	std::cout<< "(" <<(*it).oldrow << ", " << (*it).oldcol << ")" << std::endl;
+		// 	std::cout<< "(" <<(*it).newrow << ", " << (*it).newcol << ")" << std::endl;
+		// }
 		// (*B2).free_board();
 	}
 
