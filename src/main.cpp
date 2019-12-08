@@ -60,17 +60,31 @@ int main()
 
 	// print_board(*B);
 
-	(*B).set_board_color(WHITE);
-	
-	std::cout << "Color of the AI: " << (*B).get_board_color() << "\n\n";
+	ChessBoard *B_ = (*B).copy();
+
+	std::cout << "Color of the AI: WHITE\n\n";
 
 	std::cout << "Generating First Move..." << "\n\n";
-	Move fmv = AI.Generate_Next(*B, 1); 
+	
+	Move fmvW = AI.Generate_Next(*B, 10, WHITE);
 
-	AI.print_move (*B, fmv);
+	AI.print_move (*B, fmvW);
 
 	std::cout << "\n\n";
-	(*B).move(fmv.Old.row, fmv.Old.col, fmv.New.row, fmv.New.col);
+	(*B).move(fmvW.Old.row, fmvW.Old.col, fmvW.New.row, fmvW.New.col);
+
+	print_board(*B);
+
+	std::cout << "Color of the 2nd AI: BLACK\n\n";
+
+	std::cout << "Generating First Move..." << "\n\n";
+	
+	Move fmvB = AI.Generate_Next(*B, 10, BLACK);
+
+	AI.print_move (*B, fmvB);
+
+	std::cout << "\n\n";
+	(*B).move(fmvB.Old.row, fmvB.Old.col, fmvB.New.row, fmvB.New.col);
 
 	print_board(*B);
 
