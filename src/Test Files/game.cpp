@@ -180,6 +180,11 @@ int main (int argc, char** argv) {
     int finished = 0;
     int turn = WHITE;
 
+    // FOR TESTING PURPOSES
+    is_openmp = 1;
+    is_slow = 0;
+    // -------------------
+
     while(!finished)
     {
         if(is_missing_king(B, turn))
