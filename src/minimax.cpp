@@ -33,17 +33,21 @@ public:
 	}
 };
 
-Optimal_Move Max_Iteration (ChessBoard board, int depth)
+Best_Move Max_Iteration (ChessBoard board, int depth, Move move)
 {
 	if (!depth)
 		{
-		   MiniMax::Evaluate (board, 1);
+		   Best_Move Last;
+		   Last.score = MiniMax::Evaluate (board, 1);
+		   Last.move = move;
+		   return Last;
 		}
 	else
 	{
-		Optimal_Move Max;
+		// Copy Board here and call it board_c
+		Best_Move Max;
 		Max.score = 0.f;
-		vector<Move> Moves = All_Next_Moves(board, 1);
+		vector<Move> Moves = All_Next_Moves(board_c, 1);
 		for (vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
@@ -51,36 +55,41 @@ Optimal_Move Max_Iteration (ChessBoard board, int depth)
 			Pos old, new;
 			old = Curr_Move.old;
 			new = Curr_Move.new;
-			board::move(old.row, old.col, new.row, new.col);
-			Optimal_Move New = Min_Iteration(board, depth - 1);
-			
-			Max::Compare_Max(Max.score, New.score);
-
+			board_c::move(old.row, old.col, new.row, new.col);
+			Optimal_Move New = Min_Iteration(board_c, depth - 1);
+			Max = Max::Compare_Max(Max, New);
 		}
 
 		return Max;
 	}
 }
 
-float Min_Iteration (ChessBoard board, int depth)
+Best_Move Min_Iteration (ChessBoard board, int depth, Move move)
 {
-	if (!depth) return MiniMax::Evaluate (board, 0);
+	if (!depth)
+	{
+		Best_Move Last;
+	    Last.score = MiniMax::Evaluate (board, 1);
+	    Last.move = move;
+	    return Last;
+	}
 	else
 	{
-		Optimal_Move Min = 10.f;
+		Best_Move Min = 10.f;
 		vector<Move> Moves = All_Next_Moves(board, 1);
 		for (vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
 			Move Curr_Move = *it;
-			Move Curr_Move = *it;
 			Pos old, new;
 			old = Curr_Move.old;
 			new = Curr_Move.new;
-			board::move(old.row, old.col, new.row, new.col);
-			float Score = Max_Iteration(update, depth - 1); 
-
+			board_c::move(old.row, old.col, new.row, new.col);
+			Optimal_Move New = Max_Iteration(board_c, depth - 1);
+			Min = Min::Compare_Min(Min, New);
 		}
+
+		return Min;
 	}
 }
 
