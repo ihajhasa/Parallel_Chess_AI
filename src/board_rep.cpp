@@ -23,14 +23,20 @@ void Piece_free(Piece* p)
 /*	ChessBoard functions													 */
 /*---------------------------------------------------------------------------*/
 
-void ChessBoard::set_board_color(int color)
+void ChessBoard::set_AI_color(int color)
 {
-	if(color == BLACK || color == WHITE) AI_color = color;
+	if(color == BLACK) is_AI_black = 1;
+	else is_AI_white = 1;
 }
 
-int ChessBoard::get_board_color()
+int ChessBoard::is_white()
 {
-	return AI_color;
+	return is_AI_white;
+}
+
+int ChessBoard::is_black()
+{
+	return is_AI_black;
 }
 
 void ChessBoard::reset()
@@ -110,14 +116,14 @@ ChessBoard* ChessBoard::copy()
 
 void ChessBoard::free_board()
 {
-	free(board);
-	for(int i = 0; i < 6; i++)
+	if(initialized_pieces)
 	{
-		Piece_free(White[i]);
-		Piece_free(Black[i]);
+		for(int i = 0; i < 6; i++)
+		{
+			Piece_free(White[i]);
+			Piece_free(Black[i]);
+		}
 	}
-	free(White);
-	free(Black);
 }
 
 

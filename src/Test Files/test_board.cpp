@@ -63,5 +63,11 @@ int main()
 	(*B2).move(3,0,1,0);
 	print_board(*B2);
 
+	B->free_board();
+	B1->free_board();
+	B2->free_board();
+
+	std::cout << "Final print statement to make sure nothing breaks !!!!!" << std::endl;
+
 	return 0;
 }

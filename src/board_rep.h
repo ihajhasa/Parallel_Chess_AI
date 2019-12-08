@@ -37,10 +37,16 @@ class ChessBoard
 
 		Piece* board[8][8];
 
-		int AI_color;
+		// OPTIONAL FOR SIMULATING GAMEPLAY
+		int is_AI_white;
+		int is_AI_black;
 
 		void initialize()
 		{
+
+			is_AI_white = 0;
+			is_AI_black = 0;
+
 			// Initialize white and black pieces
 			for(int i = 0; i < 6; i++)
 			{
@@ -109,8 +115,9 @@ class ChessBoard
 		};
 
 	public:
-		void set_board_color(int color);
-		int get_board_color();
+		void set_AI_color(int color);
+		int is_white();
+		int is_black();
 		void reset();
 		void init();
 		Piece* lookup(int row, int col);
