@@ -5,8 +5,7 @@
 #include <vector>
 #include <string>
 #include <cstring>			// Remove the unnecessary ones later //
-#include <stdio.h>
-#include <stdlib.h>
+
 
 // Minimax associates white as max player: 1
 //     and associates black as min player: 0
@@ -15,16 +14,6 @@
 
 #define MAX 1
 #define MIN 0
-
-
-
-
-struct Best_Move
-{
-	Move move;
-	float score;
-};
-
 
 
 Move create_move(int oldrow, int oldcol, int newrow, int newcol)
@@ -37,8 +26,8 @@ Move create_move(int oldrow, int oldcol, int newrow, int newcol)
 	New -> col = newcol;
 
 	Move *move = new Move;
-	move -> old = *Old;
-	move -> new = *New;
+	move -> Old = *Old;
+	move -> New = *New;
 	return *move;
 }
 
@@ -49,43 +38,45 @@ int is_valid_pos(int row, int col)
 
 void find_piece(ChessBoard CB, Pos position)
 {
-	int name = CB.lookup(position.row, position.col)
-	switch (name)
+	Piece *type = CB.lookup(position.row, position.col);
+	if (type == NULL) return;
+
+	switch (type -> name)
 	{
 		case PAWN:
-			cout << "PAWN";
+			std::cout << "PAWN";
 			break;
 		case KING:
-			cout << "KING";
+			std::cout << "KING";
 			break;
 		case QUEEN:
-			cout << "QUEEN";
+			std::cout << "QUEEN";
 			break;
 		case KNIGHT:
-			cout << "KNIGHT";
+			std::cout << "KNIGHT";
 			break;
 		case ROOK:
-			cout << "ROOK";
+			std::cout << "ROOK";
 			break;
 		case BISHOP:
-			cout << "BISHOP";
+			std::cout << "BISHOP";
 			break;
 		default:
-			cout << "EMPTY";
+			std::cout << "EMPTY";
 			break;
 	}
 	return;
 }
 
-void MiniMax::print_move(ChessBoard CB, Move move)
+void MiniMax::print_move(ChessBoard board, Move move)
 {
-	cout << "Moving Piece: ";
-	find_piece(CB, move.old);
-	cout << endl;
-	cout << "(" << to_string(move.old.row) << ", " << to_string(move.old.col) << ")";
-	cout << " to ";
-	cout << "(" << to_string(move.new.row) << ", " << to_string(move.new.col) << ")";
-	cout << endl;
+	std::cout << "Moving Piece: ";
+	find_piece(board, move.Old);
+	std::cout << "\n";
+	std::cout << "(" << std::to_string(move.Old.row) << ", " << std::to_string(move.Old.col) << ")";
+	std::cout << " to ";
+	std::cout << "(" << std::to_string(move.New.row) << ", " << std::to_string(move.New.col) << ")";
+	std::cout << "\n";
 	return;
 }
 
@@ -622,63 +613,123 @@ float evaluate(ChessBoard board, int color)
 }
 
 
-Best_Move Compare_Max (Best_Move prev, 
-									 Best_Move curr)
+Best_Move *Compare_Max (Best_Move *prev, 
+									 Best_Move *curr)
 {
-	if (curr.score >= prev.score) 
+	if (curr -> score >= prev -> score) 
 	{
-		free(&prev);
+		free(prev);
 		return curr;
 	}
-	free(&curr);
+	free(curr);
 	return prev;
 }
 
-Best_Move Compare_Min (Best_Move prev, 
-									 Best_Move curr)
+Best_Move *Compare_Min (Best_Move *prev, 
+									 Best_Move *curr)
 {
-	if (curr.score <= prev.score) 
+	if (curr -> score <= prev -> score) 
 	{
-		free(&curr);
+		free(prev);
 		return curr;
 	}
-	free(&prev);
+	free(curr);
 	return prev;
 }
 
-
-Best_Move Max_Iteration (ChessBoard board, int depth, Move move)
+void intStr(int color)
 {
-	if (!depth)
+	if (color == BLACK) std::cout << "BLACK\n";
+	else std::cout << "WHITE\n";
+}
+
+
+void Print_piece(Piece *p_p)
+{
+	if(p_p == NULL) 
+	{
+		std::cout << "Emp";
+		return;
+	}
+
+
+	Piece p = *p_p;
+
+	if (p.color == BLACK)
+		std::cout << "B";
+	else if (p.color == WHITE)
+		std::cout << "W";
+
+	if (p.name == PAWN)
+		std::cout << "Pa";
+	else if (p.name == ROOK)
+		std::cout << "Ro";
+	else if (p.name == KNIGHT)
+		std::cout << "Kn";
+	else if (p.name == BISHOP)
+		std::cout << "Bi";
+	else if (p.name == QUEEN)
+		std::cout << "Qu";
+	else if (p.name == KING)
+		std::cout << "Ki";
+}
+
+void Print_board(ChessBoard B)
+{
+	std::cout << "-----------------------------------------" << std::endl;
+	for(int row = 0; row < 8; row++)
+	{
+		for(int col = 0; col < 8; col++)
 		{
-		   Best_Move *Last = new Best_Move;
-		   Last -> score = Evaluate (board, board.get_board_color());
-		   Last -> move = move;
-		   board.free_board();
-		   return *Last;
+			std::cout << "| ";
+			Print_piece(B.lookup(row, col));
 		}
+		std::cout << "|" << std::endl;
+		std::cout << "-----------------------------------------" << std::endl;
+	}
+	std::cout << std::endl << std::endl;
+}
+
+Best_Move *Max_Iteration (ChessBoard board, int depth, Move move)
+{
+
+	if (depth == 0)
+	{
+		Best_Move *Last = new Best_Move;
+		Last -> score = evaluate (board, board.get_board_color());
+		Last -> move = move;
+		// board.free_board();
+		return Last;
+	}
 	else
 	{
 		// Copy Board here and call it board_c
 		ChessBoard board_c = *(board.copy());
-		Best_Move Max;
+
+		Print_board(board_c);
+		std::cout << "Copied Board for Maxi...\n";
+		std::cout << "MaxiColor: ";
+		intStr(board.get_board_color());
+		Best_Move *Max = new Best_Move;
 		Max -> score = 0.f;
 
 		std::vector<Move> Moves = All_Next_Moves(board_c, board.get_board_color());
+		std::cout << "Computed All Possible Moves for Maxi...\n";
+		std::cout << "Possible Moves: " << Moves.size() << "\n\n";
 
 		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
 			Move Curr_Move = *it;
 
-			board_c.move(Curr_Move.old.row, Curr_Move.old.col, Curr_Move.new.row, Curr_Move.new.col);
+			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
 
-			Best_Move New_Move = Min_Iteration(board_c, depth - 1, Curr_Move);
-			*Max = Compare_Max(Max, New_Move);
+			Best_Move *New_Move = Min_Iteration(board_c, depth - 1, Curr_Move);
+			Max = Compare_Max(Max, New_Move);
 		}
 
-		board_c.free_board();
-		return *Max;
+		// board_c.free_board();
+		return Max;
 	}
 }
 
@@ -687,35 +738,46 @@ int get_opponent_color(int AI)
 	return (AI == BLACK) ? WHITE : BLACK;
 }
 
-Best_Move Min_Iteration (ChessBoard board, int depth, Move move)
+
+
+
+Best_Move *Min_Iteration (ChessBoard board, int depth, Move move)
 {
-	if (!depth)
+	if (depth == 0)
 	{
 		Best_Move *Last = new Best_Move;
-		int AI_color = board.get_board_color();
-	    Last -> score = Evaluate (board, get_opponent_color(AI_color));
-	    Last -> move = move;
-	    board.free_board();
-	    return *Last;
+		Last -> score = evaluate (board, get_opponent_color(board.get_board_color()));
+		Last -> move = move;
+		// board.free_board();
+		return Last;
 	}
 
 	else
 	{	
+		// Copy Board here and call it board_c
 		ChessBoard board_c = *(board.copy());
+
+		Print_board(board_c);
+		std::cout << "Copied Board for Mini\n";
+		std::cout << "MiniColor: ";
+		intStr(get_opponent_color(board.get_board_color()));
 		Best_Move *Min = new Best_Move;
 		Min -> score = 10.f;
-		std::vector<Move> Moves = All_Next_Moves(board_c, get_opponent_color(AI_color));
+
+		std::vector<Move> Moves = All_Next_Moves(board_c, get_opponent_color(board.get_board_color()));
+		std::cout << "Computed All Possible Moves for Mini...\n";
+		std::cout << "Possible Moves: " << Moves.size() << "\n\n";
 		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
 			Move Curr_Move = *it;
 
-			board_c.move(Curr_Move.old.row, Curr_Move.old.col, Curr_Move.new.row, Curr_Move.new.col);
-			Best_Move New_Move = Max_Iteration(board_c, depth - 1, Curr_Move);
-			*Min = Compare_Min(Min, New_Move);
+			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
+			Best_Move *New_Move = Max_Iteration(board_c, depth - 1, Curr_Move);
+			Min = Compare_Min(Min, New_Move);
 		}
-		board_c.free_board();
-		return *Min;
+		// board_c.free_board();
+		return Min;
 	}
 }
 
@@ -723,5 +785,6 @@ Best_Move Min_Iteration (ChessBoard board, int depth, Move move)
 
 Move MiniMax::Generate_Next(ChessBoard board, int depth)
 {
-	Max_Iteration(board, depth, create_move(0, 0, 0, 0));
+	Best_Move *Optimal = Max_Iteration(board, depth, create_move(0, 0, 0, 0));
+	return Optimal -> move;
 }

@@ -12,17 +12,25 @@ struct Pos
 {
 	int row;
 	int col;
-}
+};
 
 struct Move 
 {
-	Pos old;
-	Pos new;
-}
+	Pos Old;
+	Pos New;
+};
 
-Best_Move Min_Iteration (ChessBoard board, int depth, Move move);
+struct Best_Move
+{
+    Move move;
+    float score;
+};
 
-Best_Move Max_Iteration (ChessBoard board, int depth, Move move);
+
+
+Best_Move *Min_Iteration (ChessBoard board, int depth, Move move);
+
+Best_Move *Max_Iteration (ChessBoard board, int depth, Move move);
 
 
 class MiniMax
@@ -36,7 +44,7 @@ public:
 
     Move Generate_Next(ChessBoard board, int depth);
 
-    void print_move(Move move);
+    void print_move(ChessBoard board, Move move);
 };
 
 #endif

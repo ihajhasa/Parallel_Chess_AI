@@ -2,6 +2,8 @@
 #include "minimax.h"
 #include <iostream>
 #include <algorithm>
+#include <stdio.h>
+#include <stdlib.h>
 
 void print_piece(Piece *p_p)
 {
@@ -56,18 +58,21 @@ int main()
 
 	MiniMax AI;
 
-	print_board(*B);
+	// print_board(*B);
 
-	(*B)::set_board_color(WHITE);
+	(*B).set_board_color(WHITE);
 	
-	Move fmv = AI::Generate_Next(*B, 5); 
+	std::cout << "Color of the AI: " << (*B).get_board_color() << "\n\n";
 
-	print_move (fmv);
+	std::cout << "Generating First Move..." << "\n\n";
+	Move fmv = AI.Generate_Next(*B, 1); 
 
-	(*B)::move(fmv.old.row, fmv.old.col, fmv.new.row, fmv.new.col);
+	AI.print_move (*B, fmv);
+
+	std::cout << "\n\n";
+	(*B).move(fmv.Old.row, fmv.Old.col, fmv.New.row, fmv.New.col);
 
 	print_board(*B);
-
 
 	return 0;
 }
