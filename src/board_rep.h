@@ -80,13 +80,13 @@ class ChessBoard
 			}
 		};
 
-		void set(int row, int col, int name, int color)
+		Piece* set(int row, int col, int name, int color)
 		{
 			if(color == BLACK)
 				board[row][col] = Black[name];
 			else
 				board[row][col] = White[name];
-			return;
+			return board[row][col];
 		}
 
 		// if (oldrow, oldcol) is not empty (i.e. NULL) then move piece to
@@ -120,6 +120,7 @@ class ChessBoard
 		int is_black();
 		void reset();
 		void init();
+		Piece* set_piece(int row, int col, int name, int color);
 		Piece* lookup(int row, int col);
 		Piece* move(int oldrow, int oldcol, int newrow, int newcol);
 		ChessBoard* copy();
