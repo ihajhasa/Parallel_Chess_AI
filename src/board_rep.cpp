@@ -23,6 +23,16 @@ void Piece_free(Piece* p)
 /*	ChessBoard functions													 */
 /*---------------------------------------------------------------------------*/
 
+void ChessBoard::set_board_color(int color)
+{
+	if(color == BLACK || color == WHITE) AI_color = color;
+}
+
+int ChessBoard::get_board_color()
+{
+	return AI_color;
+}
+
 void ChessBoard::reset()
 {
 	for(int row = 0; row < 8; row++)
