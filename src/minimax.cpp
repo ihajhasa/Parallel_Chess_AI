@@ -40,6 +40,48 @@ public:
 	}
 };
 
+void find_piece(ChessBoard CB, Pos position)
+{
+	int name = CB::lookup(position.row, position.col)
+	switch (name)
+	{
+		case PAWN:
+			cout << "PAWN";
+			break;
+		case KING:
+			cout << "KING";
+			break;
+		case QUEEN:
+			cout << "QUEEN";
+			break;
+		case KNIGHT:
+			cout << "KNIGHT";
+			break;
+		case ROOK:
+			cout << "ROOK";
+			break;
+		case BISHOP:
+			cout << "BISHOP";
+			break;
+		default:
+			cout << "EMPTY";
+			break;
+	}
+	return;
+}
+
+void MiniMax::print_move(ChessBoard CB, Move move)
+{
+	cout << "Moving Piece: ";
+	find_piece(CB, move.old);
+	cout << endl;
+	cout << "(" << to_string(move.old.row) << ", " << to_string(move.old.col) << ")";
+	cout << " to ";
+	cout << "(" << to_string(move.new.row) << ", " << to_string(move.new.col) << ")";
+	cout << endl;
+	return;
+}
+
 Best_Move Max_Iteration (ChessBoard board, int depth, Move move)
 {
 	if (!depth)

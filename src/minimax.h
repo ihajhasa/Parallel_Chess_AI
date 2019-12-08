@@ -33,7 +33,7 @@ public:
 
     Move Generate_Next(ChessBoard board, int depth);
 
-
+    void print_move(Move move);
 };
 
 #endif
