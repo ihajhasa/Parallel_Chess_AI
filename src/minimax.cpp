@@ -36,7 +36,7 @@ int is_valid_pos(int row, int col)
 	return (0 <= row && row < 8 && 0 <= col && col < 8) ? 1 : 0;
 }
 
-int is_valid_move(Chessboard CB, Move move)
+int is_valid_move(ChessBoard CB, Move move)
 {
 	if (CB.lookup(move.Old.row, move.Old.col) == NULL) return 1;
 	else return 0;
@@ -724,7 +724,7 @@ Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color)
 		Best_Move *Max = new Best_Move;
 		Max -> score = 0.f;
 
-		std::vector<Move> Moves = All_Next_Moves(board_c, color);
+		std::vector<Move> Moves = All_Next_Moves(board, color);
 
 		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
@@ -761,7 +761,7 @@ Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color)
 		Best_Move *Min = new Best_Move;
 		Min -> score = 10.f;
 
-		std::vector<Move> Moves = All_Next_Moves(board_c, color);
+		std::vector<Move> Moves = All_Next_Moves(board, color);
 		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{

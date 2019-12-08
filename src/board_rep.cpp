@@ -83,6 +83,11 @@ void ChessBoard::init()
 	reset();
 }
 
+Piece* ChessBoard::set_piece(int row, int col, int name, int color)
+{
+	return set(row, col, name, color);
+}
+
 
 Piece* ChessBoard::lookup(int row, int col)
 {

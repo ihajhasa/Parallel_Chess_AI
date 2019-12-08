@@ -96,11 +96,32 @@ void process_AI(ChessBoard *B, MiniMax AI, int color, int depth)
 {
     Move nextmove;
 
+    std::cout << "IS THIS CAUSING THE C!!!?>!?!!?!?!?!?" << std::endl;
     nextmove = AI.Generate_Next(*B, depth, color);
+    std::cout << "IS THIS CAUSING THE C!!!?>!?!!?!?!?!?" << std::endl;
 
     (*B).move(nextmove.Old.row, nextmove.Old.col, nextmove.New.row, nextmove.New.col);
     std::cout << "Moved (" << nextmove.Old.row << ", " << nextmove.Old.col << ") to (" << nextmove.New.row << ", " << nextmove.New.col << ")" << std::endl;
-    
+
+}
+
+void check_border_pawns(ChessBoard *B)
+{
+    Piece *tmp;
+    for(int col = 0; col < 7; col++)
+    {
+        tmp = (*B).lookup(0, col);
+        if(tmp != NULL && tmp->name == PAWN && tmp->color == WHITE)
+        {
+            (*B).set_piece(0, col, QUEEN, WHITE);
+        }
+        tmp = (*B).lookup(7, col);
+        if(tmp != NULL && tmp->name == PAWN && tmp->color == BLACK)
+        {
+            (*B).set_piece(0, col, QUEEN, BLACK);
+        }
+    }
+
 }
 
 
@@ -143,7 +164,6 @@ int main (int argc, char** argv) {
 
     while(!finished)
     {
-
         if(turn == WHITE)
         {
             if(!is_AI_white) process_user(B, turn);
@@ -154,6 +174,8 @@ int main (int argc, char** argv) {
             if(!is_AI_black) process_user(B, turn);
             else process_AI(B, AI_Black, turn, AI_depth);
         }
+
+        // check_border_pawns(B);
 
         print_board(*B);
 
