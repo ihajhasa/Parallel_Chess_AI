@@ -7,31 +7,11 @@
 #include <algorithm>
 #include <limits.h>
 #include <vector>
-
-struct Pos
-{
-	int row;
-	int col;
-};
-
-struct Move 
-{
-	Pos Old;
-	Pos New;
-};
-
-
-struct Best_Move
-{
-    Move move;
-    float score;
-    Best_Move *next;
-};
-
-struct Top
-{
-    Best_Move *Head;
-};
+#include <sstream>
+#include <string>
+#include <cstring>	
+#include "board_rep.h"
+#include "gen_moves.h"
 
 Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color);
 

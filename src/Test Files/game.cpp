@@ -1,6 +1,10 @@
 #include <iostream>
 #include "../board_rep.h"
 #include "../minimax.h"
+#include "../minimax_openmp.h"
+
+#define SLOW    1
+#define OPENMP  2
 
 void print_piece(Piece *p_p)
 {
@@ -103,6 +107,17 @@ void process_AI(ChessBoard *B, MiniMax AI, int color, int depth)
 
 }
 
+void process_AI(ChessBoard *B, MiniMaxParallel AI, int color, int depth)
+{
+    Move nextmove;
+
+    nextmove = AI.Generate_Next(*B, depth, color);
+
+    (*B).move(nextmove.Old.row, nextmove.Old.col, nextmove.New.row, nextmove.New.col);
+    std::cout << "Moved (" << nextmove.Old.row << ", " << nextmove.Old.col << ") to (" << nextmove.New.row << ", " << nextmove.New.col << ")" << std::endl;
+
+}
+
 int is_missing_king(ChessBoard *B, int color)
 {
     for(int row = 0; row < 8; row++)
@@ -127,9 +142,10 @@ int main (int argc, char** argv) {
     //  -w :: user wants to control white pieces
     //  -b :: user wants to control black pieces
 
-    int is_AI_white = 1, is_AI_black = 1;
+    int is_AI_white = 1, is_AI_black = 1, is_slow = 1, is_openmp = 0;
     int AI_depth = 5;
     MiniMax AI_White, AI_Black;
+    MiniMaxParallel AI_White_P, AI_Black_P;
 
     for(int i = 1; i < argc; i++)
     {
@@ -141,6 +157,12 @@ int main (int argc, char** argv) {
 
         else if(!strcmp(argv[i], "-d"))
             AI_depth = atoi(argv[i + 1]);
+
+        else if(!strcmp(argv[i], "-f1"))
+        {
+            is_openmp = 1;
+            is_slow = 0;
+        }
             
     }
 
@@ -167,12 +189,14 @@ int main (int argc, char** argv) {
         else if(turn == WHITE)
         {
             if(!is_AI_white) process_user(B, turn);
-            else process_AI(B, AI_White, turn, AI_depth);
+            else if (is_slow) process_AI(B, AI_White, turn, AI_depth);
+            else if (is_openmp) process_AI(B, AI_White_P, turn, AI_depth);
         }
         else if (turn == BLACK)
         {
             if(!is_AI_black) process_user(B, turn);
-            else process_AI(B, AI_Black, turn, AI_depth);
+            else if (is_slow) process_AI(B, AI_Black, turn, AI_depth);
+            else if (is_openmp) process_AI(B, AI_Black_P, turn, AI_depth);
         }
 
         // check_border_pawns(B);
