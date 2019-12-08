@@ -8,19 +8,17 @@
 #include <limits.h>
 #include <vector>
 
-class Pos
+struct Pos
 {
-public:
 	int row;
 	int col;
-};
+}
 
-class Move 
+struct Move 
 {
-public:
 	Pos old;
 	Pos new;
-};
+}
 
 Best_Move Min_Iteration (ChessBoard board, int depth, Move move);
 
@@ -35,10 +33,6 @@ public:
     // std::unique_ptr<INBodySimulator> nbodySimulator;
 
     // List of variables that need to be global across class (if any)
-
-    float Evaluate(ChessBoard board, int color);
-
-    std::vector<Move> All_Next_Moves(ChessBoard board, int color);
 
     Move Generate_Next(ChessBoard board, int depth);
 
