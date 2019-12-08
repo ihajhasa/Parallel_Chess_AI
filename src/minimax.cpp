@@ -39,6 +39,25 @@ public:
 	}
 };
 
+Move create_move(int or, int oc, int nr, int nc)
+{
+	Pos old, new;
+	old.row = or;
+	old.col = oc;
+	new.row = nr;
+	new.col = nc;
+
+	Move move;
+	move.old = old;
+	move.new = new;
+	return move;
+}
+
+int is_valid_pos(int row, int col)
+{
+	return (0 <= row && row < 8 && 0 <= col && col < 8) ? 1 : 0;
+}
+
 void find_piece(ChessBoard CB, Pos position)
 {
 	int name = CB::lookup(position.row, position.col)
@@ -97,8 +116,8 @@ Best_Move Max_Iteration (ChessBoard board, int depth, Move move)
 		ChessBoard board_c = *(board::copy());
 		Best_Move Max;
 		Max.score = 0.f;
-		vector<Move> Moves = All_Next_Moves(board_c, board::get_board_color());
-		for (vector<Move>::iterator it = Moves.begin();
+		std::vector<Move> Moves = All_Next_Moves(board_c, board::get_board_color());
+		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
 			Move Curr_Move = *it;
@@ -136,8 +155,8 @@ Best_Move Min_Iteration (ChessBoard board, int depth, Move move)
 		ChessBoard board_c = *(board::copy());
 		Best_Move Min;
 		Min.score = 10.f;
-		vector<Move> Moves = All_Next_Moves(board_c, get_opponent_color(AI_color));
-		for (vector<Move>::iterator it = Moves.begin();
+		std::vector<Move> Moves = All_Next_Moves(board_c, get_opponent_color(AI_color));
+		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
 			Move Curr_Move = *it;
@@ -174,7 +193,7 @@ float MiniMax::Evaluate(ChessBoard board, int color)
 	int *Player_Pieces = new int[2][7];
 	int player = color -  6;
 	int player2 = (player + 1) % 2;
-	vector<Move> P1Moves, P2Moves;
+	std::vector<Move> P1Moves, P2Moves;
 
 
 	for (int i = 0; i < 2; i++)
@@ -216,20 +235,6 @@ float MiniMax::Evaluate(ChessBoard board, int color)
  	Score += 1.f * <float>(Player_Pieces[player][PAWN] - Player_Pieces[player2][PAWN]);
  	Score += 0.1f * <float>(Player_Pieces[player][7] - Player_Pieces[player2][7]);
  	return scale(Score);
-}
-
-Move create_move(int or, int oc, int nr, int nc)
-{
-	Pos old, new;
-	old.row = or;
-	old.col = oc;
-	new.row = nr;
-	new.col = nc;
-
-	Move move;
-	move.old = old;
-	move.new = new;
-	return move;
 }
 
 
@@ -689,7 +694,7 @@ std::vector<Move> gen_all_next_moves(ChessBoard B, int color)
 }
 
 
-vector<Move> MiniMax::All_Next_Moves(ChessBoard board, int color)
+std::vector<Move> MiniMax::All_Next_Moves(ChessBoard board, int color)
 {
 
 	return gen_all_next_moves(board, color);

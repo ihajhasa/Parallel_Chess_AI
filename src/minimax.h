@@ -2,6 +2,11 @@
 #define MINIMAX_H
 
 #include <math.h>
+#include <iostream>
+#include <cstdlib>
+#include <algorithm>
+#include <limits.h>
+#include <vector>
 
 class Pos
 {
@@ -29,7 +34,7 @@ public:
 
     float Evaluate(ChessBoard board, int color);
 
-    vector<Move> All_Next_Moves(ChessBoard board, int color);
+    std::vector<Move> All_Next_Moves(ChessBoard board, int color);
 
     Move Generate_Next(ChessBoard board, int depth);
 

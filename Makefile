@@ -1,10 +1,10 @@
 OUTPUTDIR := bin/
 
 #-std=c++14
-CFLAGS := -std=c++11 -fvisibility=hidden -lpthread
+CFLAGS := -std=c++11
 
 ifeq (,$(CONFIGURATION))
-	CONFIGURATION := release
+	CONFIGURATION := minimax
 endif
 
 ifeq (debug,$(CONFIGURATION))
@@ -16,24 +16,18 @@ endif
 SOURCES := src/*.cpp
 HEADERS := src/*.h
 
-TARGETBIN := nbody-$(CONFIGURATION)
+TARGETBIN := test-$(CONFIGURATION)
 
 .SUFFIXES:
 .PHONY: all clean
 
 all: $(TARGETBIN)
 
-$(TARGETBIN): $(SOURCES) $(HEADERS)
+$(TARGETBIN): $(HEADERS)
 	$(CXX) -o $@ $(CFLAGS) $(SOURCES) 
 
 clean:
-	rm -rf ./nbody-$(CONFIGURATION)
-
-check:	default
-	./checker.pl
+	rm -rf ./test-$(CONFIGURATION)
 
 FILES = src/*.cpp \
 		src/*.h
-
-handin.tar: $(FILES)
-	tar cvf handin.tar $(FILES)
