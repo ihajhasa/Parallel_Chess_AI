@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <iterator>
 #include <cstring>	
 #include "board_rep.h"
 
