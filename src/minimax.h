@@ -22,6 +22,10 @@ public:
 	Pos new;
 };
 
+Best_Move Min_Iteration (ChessBoard board, int depth, Move move);
+
+Best_Move Max_Iteration (ChessBoard board, int depth, Move move);
+
 
 class MiniMax
 {

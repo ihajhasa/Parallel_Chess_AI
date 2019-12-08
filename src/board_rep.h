@@ -107,8 +107,11 @@ class ChessBoard
 		};
 
 	public:
+		int AI_Color;
 		void reset();
 		void init();
+		void set_board_color(int color);
+		int get_board_color();
 		Piece* lookup(int row, int col);
 		Piece* move(int oldrow, int oldcol, int newrow, int newcol);
 		ChessBoard* copy();

@@ -16,36 +16,35 @@
 #define MAX 1
 #define MIN 0
 
-Best_Move Min_Iteration (ChessBoard board, int depth, Move move);
-
 class Best_Move
 {
 public:
 	Move move;
 	float score;
 
-	static inline Best_Move Compare_Max (const Best_Move & old, 
+	Best_Move Compare_Max (const Best_Move & old, 
 										 const Best_Move & new)
 	{
-		if (new >= old) return new;
+		if (new.score >= old.score) return new;
 		return old;
 	}
 
-	static inline Best_Move Compare_Min (const Best_Move & old, 
+	Best_Move Compare_Min (const Best_Move & old, 
 										 const Best_Move & new)
 	{
-		if (new <= old) return new;
+		if (new.score <= old.score) return new;
 		return old;
 	}
 };
 
-Move create_move(int or, int oc, int nr, int nc)
+Move create_move(int oldrow, int oldcol, int newrow, int newcol)
 {
-	Pos old, new;
-	old.row = or;
-	old.col = oc;
-	new.row = nr;
-	new.col = nc;
+	Pos old;
+	Pos new;
+	old.row = oldrow;
+	old.col = oldcol;
+	new.row = newrow;
+	new.col = newcol;
 
 	Move move;
 	move.old = old;
@@ -190,7 +189,7 @@ float scale (float score)
 float MiniMax::Evaluate(ChessBoard board, int color)
 {
 
-	int *Player_Pieces = new int[2][7];
+	int Player_Pieces[2][7];
 	int player = color -  6;
 	int player2 = (player + 1) % 2;
 	std::vector<Move> P1Moves, P2Moves;
@@ -227,13 +226,13 @@ float MiniMax::Evaluate(ChessBoard board, int color)
  	// Computing the Evaluated Score
  	float Score = 0.f;
 
- 	Score += 200.f * <float>(Player_Pieces[player][KING] - Player_Pieces[player2][KING]);
- 	Score += 9.f * <float>(Player_Pieces[player][QUEEN] - Player_Pieces[player2][QUEEN]);
- 	Score += 5.f * <float>(Player_Pieces[player][ROOK] - Player_Pieces[player2][ROOK]);
- 	Score += 3.f * <float>(Player_Pieces[player][BISHOP] - Player_Pieces[player2][BISHOP]);
- 	Score += 3.f * <float>(Player_Pieces[player][KNIGHT] - Player_Pieces[player2][KNIGHT]);
- 	Score += 1.f * <float>(Player_Pieces[player][PAWN] - Player_Pieces[player2][PAWN]);
- 	Score += 0.1f * <float>(Player_Pieces[player][7] - Player_Pieces[player2][7]);
+ 	Score += 200.f * ((float)(Player_Pieces[player][KING] - Player_Pieces[player2][KING]));
+ 	Score += 9.f * ((float)(Player_Pieces[player][QUEEN] - Player_Pieces[player2][QUEEN]));
+ 	Score += 5.f * ((float)(Player_Pieces[player][ROOK] - Player_Pieces[player2][ROOK]));
+ 	Score += 3.f * ((float)(Player_Pieces[player][BISHOP] - Player_Pieces[player2][BISHOP]));
+ 	Score += 3.f * ((float)(Player_Pieces[player][KNIGHT] - Player_Pieces[player2][KNIGHT]));
+ 	Score += 1.f * ((float)(Player_Pieces[player][PAWN] - Player_Pieces[player2][PAWN]));
+ 	Score += 0.1f * ((float)(Player_Pieces[player][6] - Player_Pieces[player2][6]));
  	return scale(Score);
 }
 
