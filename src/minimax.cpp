@@ -715,8 +715,6 @@ Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color)
 
 	else
 	{
-		// Copy Board here and call it board_c
-		ChessBoard board_c = *(board.copy());
 
 		Best_Move *Max = new Best_Move;
 		Max -> score = 0.f;
@@ -726,6 +724,8 @@ Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color)
 		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
+			// Copy Board here and call it board_c
+			ChessBoard board_c = *(board.copy());
 			Move Curr_Move = *it;
 
 			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
@@ -752,8 +752,6 @@ Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color)
 
 	else
 	{	
-		// Copy Board here and call it board_c
-		ChessBoard board_c = *(board.copy());
 		Best_Move *Min = new Best_Move;
 		Min -> score = 10.f;
 
@@ -761,6 +759,8 @@ Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color)
 		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
+			// Copy Board here and call it board_c
+			ChessBoard board_c = *(board.copy());
 			Move Curr_Move = *it;
 
 			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
