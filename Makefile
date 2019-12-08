@@ -29,5 +29,8 @@ $(TARGETBIN): $(HEADERS)
 clean:
 	rm -rf ./test-$(CONFIGURATION)
 
+game:
+	g++ -o run_game src/Test\ Files/game.cpp src/minimax.cpp src/board_rep.cpp
+
 FILES = src/*.cpp \
 		src/*.h
