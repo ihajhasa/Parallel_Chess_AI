@@ -1,6 +1,6 @@
 #include "minimax_openmp.h"
 
-#define GRANULARITY 15
+#define GRANULARITY 1000
 
 // void MiniMaxParallel::print_move(ChessBoard board, Move move)
 // {
