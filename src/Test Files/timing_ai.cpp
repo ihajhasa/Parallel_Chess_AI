@@ -70,6 +70,7 @@ int main()
 	for(int i = 0; i < 3; i++)
 	{
 		Timer t;
+		t.reset();
 		MiniMax AI;
 		Move rmv;
 
@@ -79,12 +80,14 @@ int main()
 
 	}
 
-	std::cout << "MiniMax Sequential Time:\t" << minimax_sequential_time << "ms" << std::endl;
 	minimax_sequential_time = minimax_sequential_time/3.0;
+	std::cout << "MiniMax Sequential Time:\t" << minimax_sequential_time << "ms" << std::endl;
+	
 
 	for(int i = 0; i < 3; i++)
 	{
 		Timer t;
+		t.reset();
 		MiniMaxParallel AI;
 		Move rmv;
 
@@ -121,6 +124,7 @@ int main()
 	for(int i = 0; i < 3; i++)
 	{
 		Timer t;
+		t.reset();
 		MiniMax AI;
 		Move rmv;
 
@@ -130,12 +134,14 @@ int main()
 
 	}
 
-	std::cout << "MiniMax Sequential Time:\t" << minimax_sequential_time << "ms" << std::endl;
+	
 	minimax_sequential_time = minimax_sequential_time/3.0;
+	std::cout << "MiniMax Sequential Time:\t" << minimax_sequential_time << "ms" << std::endl;
 
 	for(int i = 0; i < 3; i++)
 	{
 		Timer t;
+		t.reset();
 		MiniMaxParallel AI;
 		Move rmv;
 

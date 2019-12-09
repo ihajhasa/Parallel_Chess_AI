@@ -488,11 +488,45 @@ std::vector<Move> gen_next_moves(ChessBoard B, int row, int col)
 	return moves;
 }
 
+std::vector<Move> gen_all_next_moves_parallel(ChessBoard B, int color)
+{
+	int idx, row, col;
+	Piece *p;
+	std::vector<Move> moves;
+	std::vector<std::vector<Move>> submoves;
+	submoves.resize(64);
+
+	#pragma omp for
+	for(idx = 0; idx < 64; idx++)
+	{
+		row = idx/8;
+		col = idx%8;
+		p = B.lookup(row, col);
+		if(p != NULL && p->color == color)
+		{
+			submoves[idx] = gen_next_moves(B, row, col);
+		}
+	}
+
+	#pragma omp for
+	for(idx = 0; idx < 64; idx++)
+	{
+		#pragma omp critical
+		moves.insert(std::end(moves), std::begin(submoves[idx]), std::end(submoves[idx]));
+
+	}
+
+	return moves;
+
+}
+
 std::vector<Move> gen_all_next_moves(ChessBoard B, int color)
 {
 	std::vector<Move> moves;
 	int row, col;
 	Piece *p;
+
+
 
 	for(row = 0; row < 8; row++)
 	{

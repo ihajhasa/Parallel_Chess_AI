@@ -44,6 +44,7 @@ std::vector<Move> gen_next_moves_bishop(ChessBoard B, int row, int col);
 std::vector<Move> gen_next_moves_queen(ChessBoard B, int row, int col);
 std::vector<Move> gen_next_moves_king(ChessBoard B, int row, int col);
 std::vector<Move> gen_next_moves(ChessBoard B, int row, int col);
+std::vector<Move> gen_all_next_moves_parallel(ChessBoard B, int color);
 std::vector<Move> gen_all_next_moves(ChessBoard B, int color);
 std::vector<Move> All_Next_Moves(ChessBoard board, int color);
 float scale (float score);

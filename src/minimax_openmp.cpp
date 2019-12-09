@@ -1,6 +1,6 @@
 #include "minimax_openmp.h"
 
-#define GRANULARITY 1000
+#define GRANULARITY 1
 
 // void MiniMaxParallel::print_move(ChessBoard board, Move move)
 // {
@@ -28,12 +28,12 @@ Best_Move linear_get_max(std::vector<Best_Move> scores, int low, int high)
 
 Best_Move fast_get_max(std::vector<Best_Move> scores, int low, int high)
 {
-	if(high - low < GRANULARITY)
+	if(high - low <= GRANULARITY)
 	{
 		return linear_get_max(scores, low, high);
 	}
 
-	int mid = (high - low) + low/2;
+	int mid = (high + low)/2;
 
 	// Potential for parallelism
 	Best_Move min1 = fast_get_max(scores, low, mid);
@@ -55,7 +55,7 @@ Best_Move parallel_max(ChessBoard board, int depth, Move move, int color)
 	std::vector<Move> moves;
 	std::vector<Best_Move>moves_score;
 
-	moves = All_Next_Moves(board, color);
+	moves = gen_all_next_moves_parallel(board, color);
 	moves_score.resize(moves.size());
 
 	#pragma omp for
@@ -93,7 +93,7 @@ Best_Move fast_get_min(std::vector<Best_Move> scores, int low, int high)
 		return linear_get_min(scores, low, high);
 	}
 
-	int mid = (high - low) + low/2;
+	int mid = (high + low)/2;
 
 	// Potential for parallelism
 	Best_Move min1 = fast_get_min(scores, low, mid);
@@ -115,7 +115,7 @@ Best_Move parallel_min(ChessBoard board, int depth, Move move, int color)
 	std::vector<Move> moves;
 	std::vector<Best_Move>moves_score;
 
-	moves = All_Next_Moves(board, color);
+	moves = gen_all_next_moves_parallel(board, color);
 	moves_score.resize(moves.size());
 
 	#pragma omp for
