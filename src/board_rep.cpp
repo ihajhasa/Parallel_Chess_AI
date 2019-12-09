@@ -39,6 +39,11 @@ int ChessBoard::is_black()
 	return is_AI_black;
 }
 
+void ChessBoard::empty_board()
+{
+	clear();
+}
+
 void ChessBoard::reset()
 {
 	for(int row = 0; row < 8; row++)

@@ -118,6 +118,7 @@ class ChessBoard
 		void set_AI_color(int color);
 		int is_white();
 		int is_black();
+		void empty_board();
 		void reset();
 		void init();
 		Piece* set_piece(int row, int col, int name, int color);
