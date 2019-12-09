@@ -33,9 +33,9 @@ struct Top
     Best_Move *Head;
 };
 
-Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color);
+Best_Move *AlphaBetaMax (ChessBoard board, float alpha, float beta, int depth, Move old, int color)
 
-Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color);
+Best_Move *AlphaBetaMin (ChessBoard board, float alpha, float beta, int depth, Move old, int color)
 
 
 class AlphaBeta
