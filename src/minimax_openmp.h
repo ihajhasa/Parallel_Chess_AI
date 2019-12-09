@@ -13,6 +13,9 @@
 #include "gen_moves.h"
 
 
+Best_Move parallel_max(ChessBoard board, int depth, Move move, int color);
+Best_Move parallel_min(ChessBoard board, int depth, Move move, int color);
+
 class MiniMaxParallel
 {
 	public: 
