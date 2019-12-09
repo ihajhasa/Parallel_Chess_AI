@@ -101,62 +101,63 @@ int main()
 	std::cout << "MiniMax OpenMP Time:\t\t" << minimax_openmp_time << "ms" << std::endl;
 	std::cout << "Achieved Speedup OpenMP:\t" << (minimax_sequential_time/minimax_openmp_time) << "x speedup" << std::endl << std::endl;
 
-
-	// Making board 2
 	(*B1).free_board();
-	B1 = new ChessBoard;
-	(*B1).init();
-	(*B1).empty_board();
-	(*B1).set_piece(0, 1, QUEEN, WHITE);
-	(*B1).set_piece(2, 0, QUEEN, BLACK);
-	(*B1).set_piece(1, 3, QUEEN, WHITE);
-	(*B1).set_piece(5, 2, QUEEN, BLACK);
-	(*B1).set_piece(7, 5, QUEEN, BLACK);
-	(*B1).set_piece(6, 7, QUEEN, BLACK);
-	(*B1).set_piece(3, 4, QUEEN, WHITE);
-	(*B1).set_piece(4, 6, QUEEN, WHITE);
+	return 0;
+	// // Making board 2
+	// (*B1).free_board();
+	// B1 = new ChessBoard;
+	// (*B1).init();
+	// (*B1).empty_board();
+	// (*B1).set_piece(0, 1, QUEEN, WHITE);
+	// (*B1).set_piece(2, 0, QUEEN, BLACK);
+	// (*B1).set_piece(1, 3, QUEEN, WHITE);
+	// (*B1).set_piece(5, 2, QUEEN, BLACK);
+	// (*B1).set_piece(7, 5, QUEEN, BLACK);
+	// (*B1).set_piece(6, 7, QUEEN, BLACK);
+	// (*B1).set_piece(3, 4, QUEEN, WHITE);
+	// (*B1).set_piece(4, 6, QUEEN, WHITE);
 
-	minimax_sequential_time = 0; minimax_openmp_time = 0;
+	// minimax_sequential_time = 0; minimax_openmp_time = 0;
 
-	std::cout << "Board 2" << std::endl;
-	std::cout << "------------------------------------" << std::endl;
+	// std::cout << "Board 2" << std::endl;
+	// std::cout << "------------------------------------" << std::endl;
 
-	for(int i = 0; i < 3; i++)
-	{
-		Timer t;
-		t.reset();
-		MiniMax AI;
-		Move rmv;
+	// for(int i = 0; i < 3; i++)
+	// {
+	// 	Timer t;
+	// 	t.reset();
+	// 	MiniMax AI;
+	// 	Move rmv;
 
-		rmv = AI.Generate_Next(*B1, 3, WHITE);
+	// 	rmv = AI.Generate_Next(*B1, 3, WHITE);
 
-		minimax_sequential_time += t.elapsed();
+	// 	minimax_sequential_time += t.elapsed();
 
-	}
+	// }
 
 	
-	minimax_sequential_time = minimax_sequential_time/3.0;
-	std::cout << "MiniMax Sequential Time:\t" << minimax_sequential_time << "ms" << std::endl;
+	// minimax_sequential_time = minimax_sequential_time/3.0;
+	// std::cout << "MiniMax Sequential Time:\t" << minimax_sequential_time << "ms" << std::endl;
 
-	for(int i = 0; i < 3; i++)
-	{
-		Timer t;
-		t.reset();
-		MiniMaxParallel AI;
-		Move rmv;
+	// for(int i = 0; i < 3; i++)
+	// {
+	// 	Timer t;
+	// 	t.reset();
+	// 	MiniMaxParallel AI;
+	// 	Move rmv;
 
-		rmv = AI.Generate_Next(*B1, 3, WHITE);
+	// 	rmv = AI.Generate_Next(*B1, 3, WHITE);
 
-		minimax_openmp_time += t.elapsed();
+	// 	minimax_openmp_time += t.elapsed();
 
-	}
+	// }
 
-	minimax_openmp_time = minimax_openmp_time/3.0;
-	std::cout << "MiniMax OpenMP Time:\t\t" << minimax_openmp_time << "ms" << std::endl;
-	std::cout << "Achieved Speedup OpenMP:\t" << (minimax_sequential_time/minimax_openmp_time) << "x speedup" << std::endl;
+	// minimax_openmp_time = minimax_openmp_time/3.0;
+	// std::cout << "MiniMax OpenMP Time:\t\t" << minimax_openmp_time << "ms" << std::endl;
+	// std::cout << "Achieved Speedup OpenMP:\t" << (minimax_sequential_time/minimax_openmp_time) << "x speedup" << std::endl;
 
-	(*B1).free_board();
-	free(B1);
-	return 0;
+	// (*B1).free_board();
+	// free(B1);
+	// return 0;
 
 }
