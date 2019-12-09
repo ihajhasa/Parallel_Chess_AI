@@ -1,6 +1,6 @@
 #include "minimax_openmp.h"
 
-#define GRANULARITY 1
+#define GRANULARITY 100
 
 // void MiniMaxParallel::print_move(ChessBoard board, Move move)
 // {
@@ -55,7 +55,7 @@ Best_Move parallel_max(ChessBoard board, int depth, Move move, int color)
 	std::vector<Move> moves;
 	std::vector<Best_Move>moves_score;
 
-	moves = gen_all_next_moves_parallel(board, color);
+	moves = gen_all_next_moves(board, color);
 	moves_score.resize(moves.size());
 
 	#pragma omp for
@@ -66,7 +66,7 @@ Best_Move parallel_max(ChessBoard board, int depth, Move move, int color)
 		bc.move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
 		moves_score[i] = parallel_min(board, depth-1, mv, (color != WHITE) ? WHITE : BLACK);
 
-		bc.free_board();
+		// bc.free_board();
 	}
 
 	Best_Move max_score = fast_get_max(moves_score, 0, moves_score.size());
@@ -115,7 +115,7 @@ Best_Move parallel_min(ChessBoard board, int depth, Move move, int color)
 	std::vector<Move> moves;
 	std::vector<Best_Move>moves_score;
 
-	moves = gen_all_next_moves_parallel(board, color);
+	moves = gen_all_next_moves(board, color);
 	moves_score.resize(moves.size());
 
 	#pragma omp for
@@ -126,7 +126,7 @@ Best_Move parallel_min(ChessBoard board, int depth, Move move, int color)
 		bc.move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
 		moves_score[i] = parallel_max(board, depth-1, mv, (color != WHITE) ? WHITE : BLACK);
 
-		bc.free_board();
+		// bc.free_board();
 	}
 
 	Best_Move min_score = fast_get_min(moves_score, 0, moves_score.size());
