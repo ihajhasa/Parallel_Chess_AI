@@ -618,37 +618,6 @@ float evaluate(ChessBoard board, int color)
  	return scale(Score);
 }
 
-Best_Move *Compare_Range (Best_Move *curr, int alpha, int beta)
-{
-
-}
-
-Best_Move *Compare_Max (Best_Move *prev, 
-									 Best_Move *curr, Move move)
-{
-	if (curr -> score >= prev -> score) 
-	{
-		// free(prev);
-		curr -> move = move;
-		return curr;
-	}
-	// free(curr);
-	return prev;
-}
-
-Best_Move *Compare_Min (Best_Move *prev, 
-									 Best_Move *curr, Move move)
-{
-	if (curr -> score <= prev -> score) 
-	{
-		// free(prev);
-		curr -> move = move;
-		return curr;
-	}
-	// free(curr);
-	return prev;
-}
-
 void intStr(int color)
 {
 	if (color == BLACK) std::cout << "BLACK\n";
