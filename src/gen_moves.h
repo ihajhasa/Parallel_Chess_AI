@@ -50,6 +50,8 @@ std::vector<Move> All_Next_Moves(ChessBoard board, int color);
 float scale (float score);
 float evaluate(ChessBoard board, int color);
 float evaluate_quick(ChessBoard board, int color);
+float evaluate_ishaq(ChessBoard board, int color);
+float evaluate_sameer(ChessBoard board, int color);
 
 
 #endif

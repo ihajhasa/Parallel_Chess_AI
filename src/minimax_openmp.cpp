@@ -50,7 +50,7 @@ Best_Move parallel_max(ChessBoard board, int depth, Move move, int color)
 	{
 		Best_Move bm;
 		bm.move = move;
-		bm.score = evaluate(board, color);
+		bm.score = evaluate_ishaq(board, color);
 		return bm;
 	}
 
@@ -116,7 +116,7 @@ Best_Move parallel_min(ChessBoard board, int depth, Move move, int color)
 	{
 		Best_Move bm;
 		bm.move = move;
-		bm.score = evaluate(board, color);
+		bm.score = evaluate_ishaq(board, color);
 		return bm;
 	}
 
