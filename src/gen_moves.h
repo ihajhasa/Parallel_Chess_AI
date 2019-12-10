@@ -49,6 +49,7 @@ std::vector<Move> gen_all_next_moves(ChessBoard B, int color);
 std::vector<Move> All_Next_Moves(ChessBoard board, int color);
 float scale (float score);
 float evaluate(ChessBoard board, int color);
+float evaluate_quick(ChessBoard board, int color);
 
 
 #endif

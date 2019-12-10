@@ -67,6 +67,10 @@ int main()
 	B1->free_board();
 	B2->free_board();
 
+	delete B;
+	delete B1;
+	delete B2;
+
 	std::cout << "Final print statement to make sure nothing breaks !!!!!" << std::endl;
 
 	return 0;

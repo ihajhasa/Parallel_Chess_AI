@@ -13,9 +13,9 @@
 #include "board_rep.h"
 #include "gen_moves.h"
 
-Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color);
+Best_Move Min_Iteration (ChessBoard board, int depth, Move move, int color);
 
-Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color);
+Best_Move Max_Iteration (ChessBoard board, int depth, Move move, int color);
 
 
 class MiniMax

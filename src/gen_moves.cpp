@@ -42,10 +42,14 @@ Move create_move(int oldrow, int oldcol, int newrow, int newcol)
 	New -> row = newrow;
 	New -> col = newcol;
 
-	Move *move = new Move;
-	move -> Old = *Old;
-	move -> New = *New;
-	return *move;
+	Move move;
+	move.Old = *Old;
+	move.New = *New;
+
+	delete Old;
+	delete New;
+
+	return move;
 }
 
 int is_valid_pos(int row, int col)
@@ -565,6 +569,52 @@ float scale (float score)
 	if (score > 10.f) score = 10.f;
 
 	return score;
+}
+
+float evaluate_quick_helper(int player_count[6], int opponent_count[6])
+{
+	// Computing the Evaluated Score
+ 	float Score = 0.f;
+
+ 	Score += 200.f * (float)((float)player_count[KING] - (float)opponent_count[KING]);
+ 	Score += 9.f * (float)((float)player_count[QUEEN] - (float)opponent_count[QUEEN]);
+ 	Score += 5.f * (float)((float)player_count[ROOK] - (float)opponent_count[ROOK]);
+ 	Score += 3.f * (float)((float)player_count[BISHOP] - (float)opponent_count[BISHOP]);
+ 	Score += 3.f * (float)((float)player_count[KNIGHT] - (float)opponent_count[KNIGHT]);
+ 	Score += 1.f * (float)((float)player_count[PAWN] - (float)opponent_count[PAWN]);
+
+ 	return Score;
+}
+
+float evaluate_quick(ChessBoard board, int color)
+{
+	int white_count[6], black_count[6];
+	int idx, row, col;
+	Piece *p;
+
+	for(idx = PAWN; idx < KING; idx++)
+	{
+		white_count[idx] = 0;
+		black_count[idx] = 0;
+	}
+
+	for(idx = 0; idx < 64; idx++)
+	{
+		row = idx/8;
+		col = idx%8;
+
+		p = board.lookup(row, col);
+		if(p != NULL && p->color == BLACK)
+			black_count[p->name] += 1;
+		if(p != NULL && p->color == WHITE)
+			white_count[p->name] += 1;
+	}
+
+	if(color == WHITE)
+		return evaluate_quick_helper(white_count, black_count);
+	if(color == BLACK)
+		return evaluate_quick_helper(black_count, white_count);
+
 }
 
 

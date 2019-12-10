@@ -1,6 +1,8 @@
 #include "minimax_openmp.h"
 
-#define GRANULARITY 100
+#define GRANULARITY 8
+
+int total_moves_considered = 0;
 
 // void MiniMaxParallel::print_move(ChessBoard board, Move move)
 // {
@@ -55,18 +57,24 @@ Best_Move parallel_max(ChessBoard board, int depth, Move move, int color)
 	std::vector<Move> moves;
 	std::vector<Best_Move>moves_score;
 
-	moves = gen_all_next_moves(board, color);
+	moves = gen_all_next_moves_parallel(board, color);
+
+	#pragma omp critical
+	total_moves_considered += moves.size();
+
+
 	moves_score.resize(moves.size());
 
 	#pragma omp for
 	for (int i = 0; i < moves.size(); ++i)
 	{
-		ChessBoard bc = *(board.copy());
+		ChessBoard *bc = board.copy();
 		Move mv = moves[i];
-		bc.move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
+		bc->move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
 		moves_score[i] = parallel_min(board, depth-1, mv, (color != WHITE) ? WHITE : BLACK);
 
-		// bc.free_board();
+		bc->free_board();
+		free(bc);
 	}
 
 	Best_Move max_score = fast_get_max(moves_score, 0, moves_score.size());
@@ -115,18 +123,23 @@ Best_Move parallel_min(ChessBoard board, int depth, Move move, int color)
 	std::vector<Move> moves;
 	std::vector<Best_Move>moves_score;
 
-	moves = gen_all_next_moves(board, color);
+	moves = gen_all_next_moves_parallel(board, color);
+
+	#pragma omp critical
+	total_moves_considered += moves.size();
+
 	moves_score.resize(moves.size());
 
 	#pragma omp for
 	for (int i = 0; i < moves.size(); ++i)
 	{
-		ChessBoard bc = *(board.copy());
+		ChessBoard *bc = board.copy();
 		Move mv = moves[i];
-		bc.move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
+		bc->move(mv.Old.row, mv.Old.col, mv.New.row, mv.New.col);
 		moves_score[i] = parallel_max(board, depth-1, mv, (color != WHITE) ? WHITE : BLACK);
 
-		// bc.free_board();
+		bc->free_board();
+		free(bc);
 	}
 
 	Best_Move min_score = fast_get_min(moves_score, 0, moves_score.size());
@@ -137,6 +150,12 @@ Best_Move parallel_min(ChessBoard board, int depth, Move move, int color)
 
 Move MiniMaxParallel::Generate_Next(ChessBoard board, int depth, int color)
 {
+	// Timer t;
+	// t.reset();
+	// double ms;
 	Best_Move Optimal = parallel_max(board, depth, create_move(0,0,0,0), color);
+	// ms = t.elapsed;
+	// std::cout << "OpenMp Time: " << ms << "ms" << std::endl;
+	std::cout << "Number of moves considered:\t" << total_moves_considered << std::endl;
 	return Optimal.move;
 }

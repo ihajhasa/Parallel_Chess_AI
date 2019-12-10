@@ -24,30 +24,43 @@
 // }
 
 
-Best_Move *Compare_Max (Best_Move *prev, 
-									 Best_Move *curr, Move move)
+Best_Move Compare_Max (Best_Move prev, 
+									 Best_Move curr, Move move)
 {
-	if (curr -> score >= prev -> score) 
+
+	Best_Move rv;
+
+	if (curr.score >= prev.score) 
 	{
 		// free(prev);
-		curr -> move = move;
-		return curr;
+		rv.move = move;
+		rv.score = curr.score;
+		return rv;
 	}
 	// free(curr);
-	return prev;
+	rv.move = prev.move;
+	rv.score = prev.score;
+
+	return rv;
 }
 
-Best_Move *Compare_Min (Best_Move *prev, 
-									 Best_Move *curr, Move move)
+Best_Move Compare_Min (Best_Move prev, 
+									 Best_Move curr, Move move)
 {
-	if (curr -> score <= prev -> score) 
+	Best_Move rv;
+
+	if (curr.score < prev.score) 
 	{
 		// free(prev);
-		curr -> move = move;
-		return curr;
+		rv.move = move;
+		rv.score = curr.score;
+		return rv;
 	}
 	// free(curr);
-	return prev;
+	rv.move = prev.move;
+	rv.score = prev.score;
+
+	return rv;
 }
 
 void intStr(int color)
@@ -110,21 +123,21 @@ int get_opponent_color(int AI)
 }
 
 
-Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color)
+Best_Move Max_Iteration (ChessBoard board, int depth, Move move, int color)
 {
 
 	if (depth == 0)
 	{
-		Best_Move *Last = new Best_Move;
-		Last -> score = evaluate (board, color);
-		Last -> move = move;
+		Best_Move Last;
+		Last.score = evaluate(board, color);
+		Last.move = move;
 		return Last;
 	}
 
 	else
 	{
-		Best_Move *Max = new Best_Move;
-		Max -> score = 0.f;
+		Best_Move Max;
+		Max.score = (float)INT_MIN;
 
 		std::vector<Move> Moves = All_Next_Moves(board, color);
 
@@ -132,15 +145,17 @@ Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color)
 			 it != Moves.end(); ++it)
 		{
 			// Copy Board here and call it board_c
-			ChessBoard board_c = *(board.copy());
+			ChessBoard *board_c = board.copy();
 			Move Curr_Move = *it;
 
-			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
+			board_c->move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
 
-			Best_Move *New_Move = Min_Iteration(board_c, depth - 1, Curr_Move, get_opponent_color(color));
+			Best_Move New_Move = Min_Iteration(*board_c, depth - 1, Curr_Move, get_opponent_color(color));
 			
 			Max = Compare_Max(Max, New_Move, Curr_Move);
-			
+
+			board_c->free_board();
+			free(board_c);
 		}
 
 		return Max;
@@ -148,31 +163,35 @@ Best_Move *Max_Iteration (ChessBoard board, int depth, Move move, int color)
 }
 
 
-Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color)
+Best_Move Min_Iteration (ChessBoard board, int depth, Move move, int color)
 {
 	if (depth == 0)
 	{
-		Best_Move *Last = new Best_Move;
-		Last -> score = evaluate (board, color);
+		Best_Move Last;
+		Last.move = move;
+		Last.score = evaluate(board, color);
 		return Last;
 	}
 
 	else
 	{	
-		Best_Move *Min = new Best_Move;
-		Min -> score = 10.f;
+		Best_Move Min;
+		Min.score = (float)INT_MAX;
 
 		std::vector<Move> Moves = All_Next_Moves(board, color);
 		for (std::vector<Move>::iterator it = Moves.begin();
 			 it != Moves.end(); ++it)
 		{
 			// Copy Board here and call it board_c
-			ChessBoard board_c = *(board.copy());
+			ChessBoard *board_c = board.copy();
 			Move Curr_Move = *it;
 
-			board_c.move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
-			Best_Move *New_Move = Max_Iteration(board_c, depth - 1, Curr_Move, get_opponent_color(color));
+			board_c->move(Curr_Move.Old.row, Curr_Move.Old.col, Curr_Move.New.row, Curr_Move.New.col);
+			Best_Move New_Move = Max_Iteration(*board_c, depth - 1, Curr_Move, get_opponent_color(color));
 			Min = Compare_Min(Min, New_Move, Curr_Move);
+
+			board_c->free_board();
+			free(board_c);
 		}
 
 		return Min;
@@ -183,8 +202,10 @@ Best_Move *Min_Iteration (ChessBoard board, int depth, Move move, int color)
 
 Move MiniMax::Generate_Next(ChessBoard board, int depth, int color)
 {
-	Best_Move *Optimal = Max_Iteration(board, depth, create_move(0, 0, 0, 0), color);
-	return Optimal -> move;
+	Move holder = create_move(0, 0, 0, 0);
+	Best_Move Optimal = Max_Iteration(board, depth, holder, color);
+	Move mv = Optimal.move;
+	return mv;
 }
 
 
