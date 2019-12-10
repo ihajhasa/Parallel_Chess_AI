@@ -500,7 +500,7 @@ std::vector<Move> gen_all_next_moves_parallel(ChessBoard B, int color)
 	std::vector<std::vector<Move>> submoves;
 	submoves.resize(64);
 
-	#pragma omp for
+	#pragma omp for schedule(dynamic)
 	for(idx = 0; idx < 64; idx++)
 	{
 		row = idx/8;
@@ -512,7 +512,7 @@ std::vector<Move> gen_all_next_moves_parallel(ChessBoard B, int color)
 		}
 	}
 
-	#pragma omp for
+	#pragma omp for schedule(dynamic)
 	for(idx = 0; idx < 64; idx++)
 	{
 		#pragma omp critical

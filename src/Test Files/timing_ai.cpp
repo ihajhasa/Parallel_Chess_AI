@@ -106,7 +106,7 @@ int main()
 		MiniMax AI;
 		Move rmv;
 
-		rmv = AI.Generate_Next(*B1, 5, BLACK);
+		rmv = AI.Generate_Next(*B1, 5, WHITE);
 
 		minimax_sequential_time += t.elapsed();
 
@@ -123,7 +123,7 @@ int main()
 		MiniMaxParallel AI;
 		Move rmv;
 
-		rmv = AI.Generate_Next(*B1, 5, BLACK);
+		rmv = AI.Generate_Next(*B1, 5, WHITE);
 
 		if(i == 0)
 		{
