@@ -103,6 +103,14 @@ void process_AI(ChessBoard *B, MiniMax AI, int color, int depth)
     nextmove = AI.Generate_Next(*B, depth, color);
 
     (*B).move(nextmove.Old.row, nextmove.Old.col, nextmove.New.row, nextmove.New.col);
+
+
+    if(color == WHITE)
+        std::cout << "WHITE ";
+    else
+        std::cout << "BLACK ";
+
+    
     std::cout << "Moved (" << nextmove.Old.row << ", " << nextmove.Old.col << ") to (" << nextmove.New.row << ", " << nextmove.New.col << ")" << std::endl;
 
 }
@@ -114,6 +122,13 @@ void process_AI(ChessBoard *B, MiniMaxParallel AI, int color, int depth)
     nextmove = AI.Generate_Next(*B, depth, color);
 
     (*B).move(nextmove.Old.row, nextmove.Old.col, nextmove.New.row, nextmove.New.col);
+
+    if(color == WHITE)
+        std::cout << "WHITE ";
+    else
+        std::cout << "BLACK ";
+
+
     std::cout << "Moved (" << nextmove.Old.row << ", " << nextmove.Old.col << ") to (" << nextmove.New.row << ", " << nextmove.New.col << ")" << std::endl;
 
 }
@@ -167,6 +182,13 @@ int main (int argc, char** argv) {
     }
 
     // Done parsing arguments ---------------------
+
+    if(is_openmp)
+        std::cout << "Speed set to ON!!!" << std::endl;
+    if(is_slow)
+        std::cout << "Want me to take it easy on you. I see." << std::endl;
+
+    std::cout<< "Going " << AI_depth << " levels deep ;)" << std::endl;
 
 
     ChessBoard *B = new ChessBoard;

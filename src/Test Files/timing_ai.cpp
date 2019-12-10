@@ -99,31 +99,31 @@ int main()
 	std::cout << "Board 1" << std::endl;
 	std::cout << "------------------------------------" << std::endl;
 
-	for(int i = 0; i < 3; i++)
+	for(int i = 0; i < 15; i++)
 	{
 		Timer t;
 		t.reset();
 		MiniMax AI;
 		Move rmv;
 
-		rmv = AI.Generate_Next(*B1, 5, WHITE);
+		rmv = AI.Generate_Next(*B1, 5, BLACK);
 
 		minimax_sequential_time += t.elapsed();
 
 	}
 
-	minimax_sequential_time = minimax_sequential_time/3.0;
+	minimax_sequential_time = minimax_sequential_time/15.0;
 	std::cout << "MiniMax Sequential Time:\t" << minimax_sequential_time << "ms" << std::endl;
 	
 
-	for(int i = 0; i < 1; i++)
+	for(int i = 0; i < 15; i++)
 	{
 		Timer t;
 		t.reset();
 		MiniMaxParallel AI;
 		Move rmv;
 
-		rmv = AI.Generate_Next(*B1, 5, WHITE);
+		rmv = AI.Generate_Next(*B1,5, BLACK);
 
 		if(i == 0)
 		{
@@ -136,7 +136,7 @@ int main()
 
 	}
 
-	minimax_openmp_time = minimax_openmp_time/3.0;
+	minimax_openmp_time = minimax_openmp_time/15.0;
 	std::cout << "MiniMax OpenMP Time:\t\t" << minimax_openmp_time << "ms" << std::endl;
 	std::cout << "Achieved Speedup OpenMP:\t" << (minimax_sequential_time/minimax_openmp_time) << "x speedup" << std::endl << std::endl;
 
